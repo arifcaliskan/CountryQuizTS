@@ -9,23 +9,35 @@ export type Countries = {
   pop: number;
 };
 const Hero: React.FC = () => {
-  const [data, setData] = useState();
-  const [countriesData, setCountriesData] = useState<Countries>();
+  const [countries, setCountries] = useState([] as any[]);
+  const [countriesData, setCountriesData] = useState<Countries[]>();
   const fetchData = async () => {
     const response: AxiosResponse = await axios.get(api);
-    setData(response.data);
+    setCountries(response.data);
   };
   useEffect(() => {
     fetchData();
   }, []);
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    console.log(countries);
+    if (countries) {
+      for (let i = 0; i < countries?.length; i++) {
+        setCountriesData({
+          ...countriesData,
+          name: countries?.[i]?.name.common,
+          capital: countries?.[i].capital?.[0],
+          pop: countries?.[i]?.population,
+        });
+      }
+    }
+  }, [countries]);
 
   return (
     <div>
       <h1>Countries</h1>
-      <SingleCountry name={"Japan"} capital={"Tokyo"} pop={124} />
+      {countriesData?.map((c)=>{
+        return (<h2>{c.name}</h2>)
+      })}
     </div>
   );
 };
