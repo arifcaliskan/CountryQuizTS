@@ -4,9 +4,11 @@ import Hero from "./components/Hero";
 
 const App = () => {
   return (
-    <div className="">
+    <div className="flex flex-col ">
       <Header />
-      <Hero />
+      <div className="container w-screen flex justify-center mt-10">
+        <Hero />
+      </div>
       <Footer />
     </div>
   );
